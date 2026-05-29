@@ -1,0 +1,20 @@
+begin.png
+c8585c0ec2e564a2665c5bcead75443c.png
+continue.png
+cry.png
+down.png
+forest.png
+go on.png
+island.png
+left.png
+painting.png
+rest.png
+right.png
+room.png
+task inside.png
+task.png
+title.png
+up.png
+地球仪.png
+望远镜.png
+钥匙.png

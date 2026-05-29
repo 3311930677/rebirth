@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ct25jqn34byvq"
+path="res://.godot/imported/ViccyC - Kamasutra（纯音乐）firstpage.mp3-becbcd7d1db96221694e26217c50dbd2.mp3str"
+
+[deps]
+
+source_file="res://Audio/ViccyC - Kamasutra（纯音乐）firstpage.mp3"
+dest_files=["res://.godot/imported/ViccyC - Kamasutra（纯音乐）firstpage.mp3-becbcd7d1db96221694e26217c50dbd2.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

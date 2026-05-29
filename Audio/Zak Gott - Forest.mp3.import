@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://kfxhl48femfi"
+path="res://.godot/imported/Zak Gott - Forest.mp3-7b52a7dc13c0c8c86cbec9a2a306d265.mp3str"
+
+[deps]
+
+source_file="res://Audio/Zak Gott - Forest.mp3"
+dest_files=["res://.godot/imported/Zak Gott - Forest.mp3-7b52a7dc13c0c8c86cbec9a2a306d265.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

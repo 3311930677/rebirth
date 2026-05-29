@@ -1,0 +1,214 @@
+[gd_scene format=3 uid="uid://bfpae87orb2wu"]
+
+[ext_resource type="Script" path="res://main_scene.gd" id="1_main_scene"]
+[ext_resource type="Script" uid="uid://et1tbyodk4hv" path="res://player.gd" id="1_a0b1c2d3"]
+[ext_resource type="Texture2D" uid="uid://d1dd0gywel54h" path="res://Sprite/firstpage.jpg" id="2_map_bg"]
+[ext_resource type="Texture2D" uid="uid://drj3tbhou4j13" path="res://Sprite/task.png" id="3_task"]
+[ext_resource type="Texture2D" uid="uid://iq1rkyci18ff" path="res://Sprite/begin.png" id="4_begin"]
+[ext_resource type="Texture2D" uid="uid://i6dad1hky8yg" path="res://Sprite/go on.png" id="5_goon"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_furniture_1"]
+size = Vector2(477.75, 178.8125)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_furniture_2"]
+size = Vector2(598, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(184, 205)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_furniture_3"]
+size = Vector2(369, 114.75)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_furniture_4"]
+size = Vector2(1375, 252)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q6r6c"]
+size = Vector2(352, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_furniture_5"]
+size = Vector2(188, 55.65625)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_furniture_6"]
+size = Vector2(24, 420.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_left"]
+size = Vector2(32, 393)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_right"]
+size = Vector2(30, 370.8125)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_top"]
+size = Vector2(32, 432)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_bottom"]
+size = Vector2(116, 231)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door_2"]
+size = Vector2(176, 283)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door_3"]
+size = Vector2(110, 113.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_furniture_7"]
+size = Vector2(23.5, 410)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_furniture_8"]
+size = Vector2(179, 184)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(41, 65)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_placeholder"]
+
+[node name="Node2D" type="Node2D" unique_id=1347260261]
+script = ExtResource("1_main_scene")
+
+[node name="MapBackground" type="Sprite2D" parent="." unique_id=1241362023]
+z_index = -10
+position = Vector2(-12, 9)
+texture = ExtResource("2_map_bg")
+
+[node name="DoorSigns" type="Node2D" parent="." unique_id=1771725590]
+
+[node name="BeginSign" type="Sprite2D" parent="DoorSigns" unique_id=250391815]
+z_index = -1
+position = Vector2(-747, -320)
+scale = Vector2(0.09499534, 0.0985371)
+texture = ExtResource("4_begin")
+
+[node name="TaskSign" type="Sprite2D" parent="DoorSigns" unique_id=272112907]
+z_index = -1
+position = Vector2(564, -175)
+scale = Vector2(0.17, 0.17)
+texture = ExtResource("3_task")
+
+[node name="GoOnSign" type="Sprite2D" parent="DoorSigns" unique_id=1185298334]
+z_index = -1
+position = Vector2(779.9998, 254)
+scale = Vector2(0.10881603, 0.12454102)
+texture = ExtResource("5_goon")
+
+[node name="RoomBlockers" type="Node2D" parent="." unique_id=198614033]
+
+[node name="FurnitureBlockerA" type="StaticBody2D" parent="RoomBlockers" unique_id=310463813]
+position = Vector2(-250, -80)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/FurnitureBlockerA" unique_id=1424453103]
+position = Vector2(74, 275)
+shape = SubResource("RectangleShape2D_furniture_1")
+
+[node name="FurnitureBlockerB" type="StaticBody2D" parent="RoomBlockers" unique_id=1167180700]
+position = Vector2(240, 120)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/FurnitureBlockerB" unique_id=1772573169]
+position = Vector2(-435, -28)
+shape = SubResource("RectangleShape2D_furniture_2")
+
+[node name="DoorBlocker" type="StaticBody2D" parent="RoomBlockers" unique_id=1764332227]
+position = Vector2(0, 330)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/DoorBlocker" unique_id=503270269]
+position = Vector2(-260, 12)
+shape = SubResource("RectangleShape2D_door")
+
+[node name="FurnitureBlockerC" type="StaticBody2D" parent="RoomBlockers" unique_id=1688954703]
+position = Vector2(0, -40)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/FurnitureBlockerC" unique_id=1304781463]
+position = Vector2(676.5, 191.375)
+shape = SubResource("RectangleShape2D_furniture_3")
+
+[node name="FurnitureBlockerD" type="StaticBody2D" parent="RoomBlockers" unique_id=1839570157]
+position = Vector2(360, -130)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/FurnitureBlockerD" unique_id=576495479]
+position = Vector2(-206, -232)
+shape = SubResource("RectangleShape2D_furniture_4")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="RoomBlockers/FurnitureBlockerD" unique_id=579429995]
+position = Vector2(-509, -102)
+shape = SubResource("RectangleShape2D_q6r6c")
+
+[node name="FurnitureBlockerE" type="StaticBody2D" parent="RoomBlockers" unique_id=1941172082]
+position = Vector2(-340, 170)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/FurnitureBlockerE" unique_id=959714319]
+position = Vector2(172, -281.17188)
+shape = SubResource("RectangleShape2D_furniture_5")
+
+[node name="FurnitureBlockerF" type="StaticBody2D" parent="RoomBlockers" unique_id=1473620223]
+position = Vector2(150, 210)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/FurnitureBlockerF" unique_id=785260180]
+position = Vector2(70, -487.25)
+shape = SubResource("RectangleShape2D_furniture_6")
+
+[node name="LeftWallBlocker" type="StaticBody2D" parent="RoomBlockers" unique_id=761529502]
+position = Vector2(-560, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/LeftWallBlocker" unique_id=4116317]
+position = Vector2(25, 290)
+shape = SubResource("RectangleShape2D_wall_left")
+
+[node name="RightWallBlocker" type="StaticBody2D" parent="RoomBlockers" unique_id=909355630]
+position = Vector2(560, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/RightWallBlocker" unique_id=481479457]
+position = Vector2(-223, 280.40625)
+shape = SubResource("RectangleShape2D_wall_right")
+
+[node name="TopWallBlocker" type="StaticBody2D" parent="RoomBlockers" unique_id=1577010764]
+position = Vector2(0, -310)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/TopWallBlocker" unique_id=43394856]
+position = Vector2(-536, 40)
+shape = SubResource("RectangleShape2D_wall_top")
+
+[node name="BottomWallBlocker" type="StaticBody2D" parent="RoomBlockers" unique_id=191603778]
+position = Vector2(0, 310)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/BottomWallBlocker" unique_id=1033766439]
+position = Vector2(-4, -58)
+shape = SubResource("RectangleShape2D_wall_bottom")
+
+[node name="DoorBlocker2" type="StaticBody2D" parent="RoomBlockers" unique_id=864445729]
+position = Vector2(420, 280)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/DoorBlocker2" unique_id=329524845]
+position = Vector2(159, -9)
+shape = SubResource("RectangleShape2D_door_2")
+
+[node name="DoorBlocker3" type="StaticBody2D" parent="RoomBlockers" unique_id=394979139]
+position = Vector2(-430, -260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/DoorBlocker3" unique_id=689550370]
+position = Vector2(59, 76.75)
+shape = SubResource("RectangleShape2D_door_3")
+
+[node name="FurnitureBlockerG" type="StaticBody2D" parent="RoomBlockers" unique_id=2097854039]
+position = Vector2(-120, 260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/FurnitureBlockerG" unique_id=414835510]
+position = Vector2(201, 32)
+shape = SubResource("RectangleShape2D_furniture_7")
+
+[node name="FurnitureBlockerH" type="StaticBody2D" parent="RoomBlockers" unique_id=717162888]
+position = Vector2(120, -260)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/FurnitureBlockerH" unique_id=2032451584]
+position = Vector2(649, 138)
+shape = SubResource("RectangleShape2D_furniture_8")
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1347260262]
+position = Vector2(1, 1)
+script = ExtResource("1_a0b1c2d3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1347260263]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_1")
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1347260264]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player" unique_id=1123651587]
+position = Vector2(-2.5656128, -36.656067)
+sprite_frames = SubResource("SpriteFrames_placeholder")

@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://d36rgbmy8r6i5"]
+
+[ext_resource type="Script" uid="uid://blvm1wllbe8vd" path="res://task_board.gd" id="1_task_board_script"]
+
+[node name="TaskBoard" type="Control" unique_id=985253776]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -118.0
+offset_right = 8.0
+offset_bottom = -118.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_task_board_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1044271678]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 88.0
+offset_right = 40.0
+offset_bottom = 88.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 6
+
+[node name="TaskPanel" type="Panel" parent="." unique_id=1104330794]
+self_modulate = Color(1, 1, 1, 0.93)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.59
+anchor_top = 0.12
+anchor_right = 0.96
+anchor_bottom = 0.9
+offset_left = -105.67999
+offset_top = 196.24
+offset_right = 22.320068
+offset_bottom = 71.79999
+
+[node name="Title" type="Label" parent="TaskPanel" unique_id=1248909695]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 16.0
+offset_right = 520.0
+offset_bottom = 75.0
+theme_override_font_sizes/font_size = 42
+horizontal_alignment = 1
+
+[node name="Task1" type="Label" parent="TaskPanel" unique_id=77749754]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 94.0
+offset_right = 516.0
+offset_bottom = 152.0
+theme_override_font_sizes/font_size = 30
+text = "1. 任务一：暂无"
+autowrap_mode = 3
+
+[node name="Task2" type="Label" parent="TaskPanel" unique_id=1515735710]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 176.0
+offset_right = 516.0
+offset_bottom = 234.0
+theme_override_font_sizes/font_size = 30
+text = "2. 任务二：暂无"
+autowrap_mode = 3
+
+[node name="Hint" type="Label" parent="TaskPanel" unique_id=1101007907]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 306.0
+offset_right = 520.0
+offset_bottom = 356.0
+theme_override_font_sizes/font_size = 20
+text = "今日进度：0/2  (按 1 / 2 勾选，Esc 返回)"

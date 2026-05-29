@@ -1,0 +1,192 @@
+[gd_scene format=3 uid="uid://brck3v5uoiyhy"]
+
+[ext_resource type="Script" uid="uid://bejcby7b30a2i" path="res://world_room.gd" id="1_world_room"]
+[ext_resource type="Script" uid="uid://et1tbyodk4hv" path="res://player.gd" id="2_player"]
+[ext_resource type="Texture2D" uid="uid://d33a3vyhgq0td" path="res://Sprite/room background.jpg" id="3_bg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_painting"]
+size = Vector2(420, 360)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_globe"]
+size = Vector2(320, 340)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_telescope"]
+size = Vector2(300, 320)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_key"]
+size = Vector2(260, 220)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(28, 44)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_placeholder"]
+
+[node name="WorldRoom" type="Node2D" unique_id=2009408585]
+script = ExtResource("1_world_room")
+world_name = "room"
+intro_frames_dir = "res://Sprite/room_intro"
+
+[node name="MapBackground" type="Sprite2D" parent="." unique_id=1267948119]
+z_index = -10
+texture = ExtResource("3_bg")
+
+[node name="PaintingTrigger" type="Area2D" parent="MapBackground" unique_id=2017202733]
+position = Vector2(415, -204)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/PaintingTrigger" unique_id=404737847]
+shape = SubResource("RectangleShape2D_painting")
+
+[node name="GlobeTrigger" type="Area2D" parent="MapBackground" unique_id=2007023497]
+position = Vector2(-825, -459)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/GlobeTrigger" unique_id=1012188268]
+shape = SubResource("RectangleShape2D_globe")
+
+[node name="TelescopeTrigger" type="Area2D" parent="MapBackground" unique_id=850975495]
+position = Vector2(-1352, -387)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/TelescopeTrigger" unique_id=701358562]
+shape = SubResource("RectangleShape2D_telescope")
+
+[node name="KeyTrigger" type="Area2D" parent="MapBackground" unique_id=624168254]
+position = Vector2(-806, 484)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/KeyTrigger" unique_id=2140824666]
+shape = SubResource("RectangleShape2D_key")
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=2100852554]
+position = Vector2(0, 8)
+script = ExtResource("2_player")
+movement_bounds_margin = 24.0
+enable_scene_triggers = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=881667785]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_player")
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1055723771]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player" unique_id=1913220963]
+position = Vector2(-2.5656128, -36.656067)
+sprite_frames = SubResource("SpriteFrames_placeholder")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1920785930]
+
+[node name="IntroOverlay" type="Control" parent="UI" unique_id=1203794579]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+
+[node name="IntroImage" type="TextureRect" parent="UI/IntroOverlay" unique_id=1203794580]
+layout_mode = 0
+expand_mode = 1
+stretch_mode = 6
+
+[node name="PaintingView" type="Control" parent="UI" unique_id=938387562]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Dimmer" type="ColorRect" parent="UI/PaintingView" unique_id=614867786]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.72)
+
+[node name="PaintingImage" type="TextureRect" parent="UI/PaintingView" unique_id=254919314]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -336.0
+offset_top = -160.0
+offset_right = 304.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="DialoguePanel" type="Panel" parent="UI/PaintingView" unique_id=467868679]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -460.0
+offset_top = 28.0
+offset_right = 460.0
+offset_bottom = 168.0
+grow_horizontal = 2
+
+[node name="DialogueLabel" type="Label" parent="UI/PaintingView/DialoguePanel" unique_id=467868680]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 10.0
+offset_right = -16.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.86, 1)
+theme_override_font_sizes/font_size = 22
+text = "让我看看这幅画有什么特别的.............."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="CloseHint" type="Label" parent="UI/PaintingView" unique_id=1424846825]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -56.0
+offset_right = 160.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 22
+text = "Esc 退出查看"
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="UI" unique_id=594795683]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -240.0
+offset_top = -48.0
+offset_right = 240.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 22
+text = "Esc 返回世界选择"
+horizontal_alignment = 1
