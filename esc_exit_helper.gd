@@ -28,8 +28,9 @@ static func handle_input(
 		on_pending_changed.call(not esc_confirm_pending)
 		return true
 
-	if esc_confirm_pending and event is InputEventKey and event.pressed:
-		if not is_enter_pressed(event):
+	if esc_confirm_pending and event is InputEventKey:
+		var key_event: InputEventKey = event as InputEventKey
+		if key_event.pressed and not is_enter_pressed(event):
 			on_pending_changed.call(false)
 
 	return false

@@ -1,8 +1,8 @@
-[gd_scene format=3 uid="uid://d36rgbmy8r6i5"]
+[gd_scene load_steps=2 format=3 uid="uid://d36rgbmy8r6i5"]
 
 [ext_resource type="Script" uid="uid://blvm1wllbe8vd" path="res://task_board.gd" id="1_task_board_script"]
 
-[node name="TaskBoard" type="Control" unique_id=985253776]
+[node name="TaskBoard" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_task_board_script")
 
-[node name="Background" type="TextureRect" parent="." unique_id=1044271678]
+[node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,7 +28,7 @@ grow_horizontal = 2
 grow_vertical = 2
 stretch_mode = 6
 
-[node name="TaskPanel" type="Panel" parent="." unique_id=1104330794]
+[node name="TaskPanel" type="Panel" parent="."]
 self_modulate = Color(1, 1, 1, 0.93)
 layout_mode = 1
 anchors_preset = -1
@@ -41,40 +41,65 @@ offset_top = 196.24
 offset_right = 22.320068
 offset_bottom = 71.79999
 
-[node name="Title" type="Label" parent="TaskPanel" unique_id=1248909695]
+[node name="Title" type="Label" parent="TaskPanel"]
 layout_mode = 0
 offset_left = 24.0
-offset_top = 16.0
+offset_top = 8.0
 offset_right = 520.0
-offset_bottom = 75.0
-theme_override_font_sizes/font_size = 42
+offset_bottom = 52.0
+theme_override_font_sizes/font_size = 28
 horizontal_alignment = 1
 
-[node name="Task1" type="Label" parent="TaskPanel" unique_id=77749754]
+[node name="Task1" type="Label" parent="TaskPanel"]
 layout_mode = 0
-offset_left = 28.0
-offset_top = 94.0
+offset_left = 20.0
+offset_top = 58.0
 offset_right = 516.0
-offset_bottom = 152.0
-theme_override_font_sizes/font_size = 30
-text = "1. 任务一：暂无"
+offset_bottom = 98.0
+theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
 
-[node name="Task2" type="Label" parent="TaskPanel" unique_id=1515735710]
+[node name="Task2" type="Label" parent="TaskPanel"]
 layout_mode = 0
-offset_left = 28.0
-offset_top = 176.0
+offset_left = 20.0
+offset_top = 104.0
 offset_right = 516.0
-offset_bottom = 234.0
-theme_override_font_sizes/font_size = 30
-text = "2. 任务二：暂无"
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
 
-[node name="Hint" type="Label" parent="TaskPanel" unique_id=1101007907]
+[node name="Task3" type="Label" parent="TaskPanel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 150.0
+offset_right = 516.0
+offset_bottom = 190.0
+theme_override_font_sizes/font_size = 18
+autowrap_mode = 3
+
+[node name="Task4" type="Label" parent="TaskPanel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 196.0
+offset_right = 516.0
+offset_bottom = 236.0
+theme_override_font_sizes/font_size = 18
+autowrap_mode = 3
+
+[node name="Task5" type="Label" parent="TaskPanel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 242.0
+offset_right = 516.0
+offset_bottom = 282.0
+theme_override_font_sizes/font_size = 18
+autowrap_mode = 3
+
+[node name="Hint" type="Label" parent="TaskPanel"]
 layout_mode = 0
 offset_left = 24.0
-offset_top = 306.0
+offset_top = 300.0
 offset_right = 520.0
-offset_bottom = 356.0
-theme_override_font_sizes/font_size = 20
-text = "今日进度：0/2  (按 1 / 2 勾选，Esc 返回)"
+offset_bottom = 350.0
+theme_override_font_sizes/font_size = 16
+text = "进度：0/5   前往星途岛完成任务    Esc 返回"

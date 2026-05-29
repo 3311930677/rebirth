@@ -62,22 +62,15 @@ func _input(event: InputEvent) -> void:
 		if not key_event.pressed or key_event.echo:
 			return
 		match key_event.keycode:
-			KEY_LEFT, KEY_A:
+			KEY_A:
 				_move_selection(-1)
 				return
-			KEY_RIGHT, KEY_D:
+			KEY_D:
 				_move_selection(1)
 				return
 			KEY_ENTER, KEY_KP_ENTER:
 				_enter_selected_world()
 				return
-
-	if event.is_action_pressed("ui_left"):
-		_move_selection(-1)
-	elif event.is_action_pressed("ui_right"):
-		_move_selection(1)
-	elif event.is_action_pressed("ui_accept"):
-		_enter_selected_world()
 
 func _set_esc_confirm_pending(pending: bool) -> void:
 	_esc_confirm_pending = pending
@@ -153,13 +146,13 @@ func _refresh_selection(immediate: bool) -> void:
 	if _selected_index == _option_nodes.size() - 1:
 		_hint_label.text = EscExitHelper.hint_text(
 			_esc_confirm_pending,
-			"左右切换 | continue 不可进入 | Esc 返回",
+			"A / D 切换 | continue 不可进入 | Esc 返回",
 			"再按 Enter 确认返回主房间"
 		)
 	else:
 		_hint_label.text = EscExitHelper.hint_text(
 			_esc_confirm_pending,
-			"左右切换 | Enter 进入 " + OPTION_NAMES[_selected_index] + "  |  Esc 返回",
+			"A / D 切换 | Enter 进入 " + OPTION_NAMES[_selected_index] + "  |  Esc 返回",
 			"再按 Enter 确认返回主房间"
 		)
 

@@ -1,56 +1,113 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://cisqqi2eh0r1r"]
 
-[ext_resource type="Script" path="res://world_island.gd" id="1_world_page"]
-[ext_resource type="Script" path="res://player.gd" id="2_player"]
+[ext_resource type="Script" uid="uid://x6w5k16q55tn" path="res://world_island.gd" id="1_world_page"]
+[ext_resource type="Script" uid="uid://et1tbyodk4hv" path="res://player.gd" id="2_player"]
 [ext_resource type="Texture2D" uid="uid://cnknoxki60bfc" path="res://Sprite/island background.jpg" id="3_bg"]
+[ext_resource type="Texture2D" uid="uid://5xxej2qcoh88" path="res://Sprite/宝藏.png" id="4_treasure"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lighthouse"]
+size = Vector2(280, 260)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cave"]
+size = Vector2(309, 214)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fruit"]
+size = Vector2(155, 186)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lake"]
+size = Vector2(419, 329)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_treasure"]
+size = Vector2(300, 240)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 size = Vector2(29, 46)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_placeholder"]
 
-[node name="WorldIsland" type="Node2D"]
+[node name="WorldIsland" type="Node2D" unique_id=1813346584]
 script = ExtResource("1_world_page")
 world_name = "island"
-intro_video_path = "res://Sprite/island.mov"
+intro_video_path = "res://Sprite/island.ogv"
 
-[node name="MapBackground" type="Sprite2D" parent="."]
+[node name="MapBackground" type="Sprite2D" parent="." unique_id=2074668787]
 z_index = -10
+position = Vector2(0, -509)
 texture = ExtResource("3_bg")
 
-[node name="Player" type="CharacterBody2D" parent="."]
+[node name="LighthouseTrigger" type="Area2D" parent="MapBackground" unique_id=530517271]
+position = Vector2(980, -520)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/LighthouseTrigger" unique_id=496115034]
+position = Vector2(-1013, 199)
+shape = SubResource("RectangleShape2D_lighthouse")
+
+[node name="CaveTrigger" type="Area2D" parent="MapBackground" unique_id=1487024153]
+position = Vector2(-960, -160)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/CaveTrigger" unique_id=271425700]
+position = Vector2(574.5, 191)
+shape = SubResource("RectangleShape2D_cave")
+
+[node name="FruitTrigger" type="Area2D" parent="MapBackground" unique_id=1912039221]
+position = Vector2(180, 560)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/FruitTrigger" unique_id=462444949]
+position = Vector2(57.5, -584)
+shape = SubResource("RectangleShape2D_fruit")
+
+[node name="LakeTrigger" type="Area2D" parent="MapBackground" unique_id=1129284808]
+position = Vector2(-280, 120)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/LakeTrigger" unique_id=1703282560]
+position = Vector2(-159.5, 161.5)
+shape = SubResource("RectangleShape2D_lake")
+
+[node name="TreasureTrigger" type="Area2D" parent="MapBackground" unique_id=1498021944]
+position = Vector2(760, 520)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/TreasureTrigger" unique_id=2029713020]
+position = Vector2(-399, -58)
+shape = SubResource("RectangleShape2D_treasure")
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1988656390]
 script = ExtResource("2_player")
 sprite_scale = 0.168
-enable_scene_triggers = false
-movement_bounds_sprite = NodePath("../MapBackground")
 movement_bounds_margin = 24.0
+enable_scene_triggers = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1107467975]
 position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_player")
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=319011442]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player" unique_id=1166703557]
 position = Vector2(-2.5656128, -36.656067)
 sprite_frames = SubResource("SpriteFrames_placeholder")
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=2102524539]
 
-[node name="HintLabel" type="Label" parent="UI"]
+[node name="HintLabel" type="Label" parent="UI" unique_id=516760140]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -240.0
+offset_left = -360.0
 offset_top = -48.0
-offset_right = 240.0
+offset_right = 360.0
 offset_bottom = -16.0
-horizontal_alignment = 1
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 text = "Esc 返回世界选择"
+horizontal_alignment = 1
 
-[node name="IntroDialoguePanel" type="Panel" parent="UI"]
+[node name="IntroDialoguePanel" type="Panel" parent="UI" unique_id=954670005]
 visible = false
 anchors_preset = 7
 anchor_left = 0.5
@@ -63,7 +120,7 @@ offset_right = 460.0
 offset_bottom = -72.0
 grow_horizontal = 2
 
-[node name="IntroDialogueLabel" type="Label" parent="UI/IntroDialoguePanel"]
+[node name="IntroDialogueLabel" type="Label" parent="UI/IntroDialoguePanel" unique_id=876469184]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -79,3 +136,229 @@ theme_override_font_sizes/font_size = 22
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
+
+[node name="TaskInputView" type="Control" parent="UI" unique_id=1108570425]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Dimmer" type="ColorRect" parent="UI/TaskInputView" unique_id=992488122]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.72)
+
+[node name="InputPanel" type="Panel" parent="UI/TaskInputView" unique_id=867688232]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = -120.0
+offset_right = 360.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PromptLabel" type="Label" parent="UI/TaskInputView/InputPanel" unique_id=779634073]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 688.0
+offset_bottom = 52.0
+theme_override_font_sizes/font_size = 20
+autowrap_mode = 3
+
+[node name="AnswerLineEdit" type="LineEdit" parent="UI/TaskInputView/InputPanel" unique_id=1822796966]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 64.0
+offset_right = 688.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 20
+placeholder_text = "在此输入答案"
+
+[node name="FeedbackLabel" type="Label" parent="UI/TaskInputView/InputPanel" unique_id=1860977373]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 108.0
+offset_right = 688.0
+offset_bottom = 148.0
+theme_override_colors/font_color = Color(1, 0.72, 0.55, 1)
+theme_override_font_sizes/font_size = 18
+autowrap_mode = 3
+
+[node name="InputHint" type="Label" parent="UI/TaskInputView" unique_id=1794258603]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -56.0
+offset_right = 180.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 18
+text = "Enter 提交    Esc 关闭"
+horizontal_alignment = 1
+
+[node name="TaskMessageView" type="Control" parent="UI" unique_id=1646577875]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Dimmer" type="ColorRect" parent="UI/TaskMessageView" unique_id=981521620]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.72)
+
+[node name="MessagePanel" type="Panel" parent="UI/TaskMessageView" unique_id=242673788]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -100.0
+offset_right = 420.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MessageLabel" type="Label" parent="UI/TaskMessageView/MessagePanel" unique_id=1640440379]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 12.0
+offset_right = -16.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.86, 1)
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="MessageHint" type="Label" parent="UI/TaskMessageView" unique_id=570502079]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -56.0
+offset_right = 180.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 18
+text = "Enter / Esc 关闭"
+horizontal_alignment = 1
+
+[node name="EndingView" type="Control" parent="UI" unique_id=1818084515]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TreasureBackground" type="TextureRect" parent="UI/EndingView" unique_id=660796142]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_treasure")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Dimmer" type="ColorRect" parent="UI/EndingView" unique_id=152668462]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.02, 0.02, 0.05, 0.78)
+
+[node name="EndingPanel" type="Panel" parent="UI/EndingView" unique_id=1706179661]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -520.0
+offset_top = -220.0
+offset_right = 520.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EndingLabel" type="Label" parent="UI/EndingView/EndingPanel" unique_id=923591244]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 16.0
+offset_right = -20.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.96, 0.86, 1)
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="EndingHint" type="Label" parent="UI/EndingView" unique_id=1662984010]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -56.0
+offset_right = 180.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 18
+text = "Enter / Esc 关闭"
+horizontal_alignment = 1

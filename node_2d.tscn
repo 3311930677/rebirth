@@ -1,17 +1,20 @@
 [gd_scene format=3 uid="uid://bfpae87orb2wu"]
 
-[ext_resource type="Script" path="res://main_scene.gd" id="1_main_scene"]
 [ext_resource type="Script" uid="uid://et1tbyodk4hv" path="res://player.gd" id="1_a0b1c2d3"]
+[ext_resource type="Script" uid="uid://dhpt8hxsafvkj" path="res://main_scene.gd" id="1_main_scene"]
 [ext_resource type="Texture2D" uid="uid://d1dd0gywel54h" path="res://Sprite/firstpage.jpg" id="2_map_bg"]
 [ext_resource type="Texture2D" uid="uid://drj3tbhou4j13" path="res://Sprite/task.png" id="3_task"]
 [ext_resource type="Texture2D" uid="uid://iq1rkyci18ff" path="res://Sprite/begin.png" id="4_begin"]
 [ext_resource type="Texture2D" uid="uid://i6dad1hky8yg" path="res://Sprite/go on.png" id="5_goon"]
+[ext_resource type="Texture2D" uid="uid://lchh2c8nes0y" path="res://Sprite/pixel-evolution.png" id="6_settings"]
+[ext_resource type="PackedScene" path="res://settings_menu.tscn" id="7_settings_menu"]
+[ext_resource type="Texture2D" uid="uid://divyr658ctamo" path="res://Sprite/pixsora.png" id="8_codex"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_furniture_1"]
 size = Vector2(477.75, 178.8125)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_furniture_2"]
-size = Vector2(598, 30)
+size = Vector2(521, 30)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
 size = Vector2(184, 205)
@@ -88,6 +91,18 @@ position = Vector2(779.9998, 254)
 scale = Vector2(0.10881603, 0.12454102)
 texture = ExtResource("5_goon")
 
+[node name="SettingsSign" type="Sprite2D" parent="DoorSigns" unique_id=815425252]
+z_index = -1
+position = Vector2(-471, 157)
+scale = Vector2(0.14, 0.14)
+texture = ExtResource("6_settings")
+
+[node name="CodexSign" type="Sprite2D" parent="DoorSigns" unique_id=990139835]
+z_index = -1
+position = Vector2(108.00001, -211.99997)
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("8_codex")
+
 [node name="RoomBlockers" type="Node2D" parent="." unique_id=198614033]
 
 [node name="FurnitureBlockerA" type="StaticBody2D" parent="RoomBlockers" unique_id=310463813]
@@ -101,7 +116,7 @@ shape = SubResource("RectangleShape2D_furniture_1")
 position = Vector2(240, 120)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/FurnitureBlockerB" unique_id=1772573169]
-position = Vector2(-435, -28)
+position = Vector2(-396.5, -28)
 shape = SubResource("RectangleShape2D_furniture_2")
 
 [node name="DoorBlocker" type="StaticBody2D" parent="RoomBlockers" unique_id=1764332227]
@@ -122,7 +137,7 @@ shape = SubResource("RectangleShape2D_furniture_3")
 position = Vector2(360, -130)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RoomBlockers/FurnitureBlockerD" unique_id=576495479]
-position = Vector2(-206, -232)
+position = Vector2(-190, -233)
 shape = SubResource("RectangleShape2D_furniture_4")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="RoomBlockers/FurnitureBlockerD" unique_id=579429995]
@@ -212,3 +227,21 @@ shape = SubResource("RectangleShape2D_1")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player" unique_id=1123651587]
 position = Vector2(-2.5656128, -36.656067)
 sprite_frames = SubResource("SpriteFrames_placeholder")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=2079719333]
+
+[node name="SettingsHint" type="Label" parent="UI" unique_id=527883207]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -88.0
+offset_right = 200.0
+offset_bottom = -56.0
+theme_override_font_sizes/font_size = 20
+text = "按 Enter 打开设置"
+horizontal_alignment = 1
+
+[node name="SettingsMenu" parent="UI" unique_id=1260766559 instance=ExtResource("7_settings_menu")]

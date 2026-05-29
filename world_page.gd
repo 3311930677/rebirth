@@ -17,11 +17,11 @@ const EscExitHelper = preload("res://esc_exit_helper.gd")
 @onready var _intro_overlay: Control = get_node_or_null("UI/IntroOverlay") as Control
 @onready var _intro_image: TextureRect = get_node_or_null("UI/IntroOverlay/IntroImage") as TextureRect
 
-var _esc_confirm_pending := false
+var _esc_confirm_pending: bool = false
 var _intro_frames: Array[Texture2D] = []
-var _intro_frame_index := 0
-var _intro_elapsed := 0.0
-var _intro_playing := false
+var _intro_frame_index: int = 0
+var _intro_elapsed: float = 0.0
+var _intro_playing: bool = false
 var _intro_video: VideoStreamPlayer = null
 var _intro_video_overlay: Control = null
 var _intro_video_rect: TextureRect = null
@@ -40,12 +40,13 @@ func _ready() -> void:
 func is_intro_video_playing() -> bool:
 	return _intro_playing
 
+
 func _process(delta: float) -> void:
 	if not _intro_playing:
 		return
 
 	if _intro_video != null:
-		var video_texture: Texture2D = _intro_video.get_video_texture()
+		var video_texture: Texture2D = _intro_video.get_video_texture() as Texture2D
 		if video_texture != null and _intro_video_rect != null:
 			_intro_video_rect.texture = video_texture
 		return
@@ -124,7 +125,8 @@ func _prepare_intro() -> void:
 		return
 
 	var names: Array[String] = []
-	for file_name in dir.get_files():
+	for raw_name in dir.get_files():
+		var file_name: String = str(raw_name)
 		if file_name.to_lower().ends_with(".png"):
 			names.append(file_name)
 	names.sort()
@@ -173,7 +175,7 @@ func _release_player_after_intro() -> void:
 		_player.visible = true
 
 func _play_intro_video() -> void:
-	var stream := _load_intro_video_stream(intro_video_path)
+	var stream: VideoStream = _load_intro_video_stream(intro_video_path)
 	if stream == null or _background == null:
 		push_warning("Intro video not found: %s" % intro_video_path)
 		return
@@ -215,13 +217,24 @@ func _cleanup_intro_video() -> void:
 		_intro_video = null
 
 func _load_intro_video_stream(path: String) -> VideoStream:
-	var stream := load(path) as VideoStream
-	if stream != null:
-		return stream
+	if path.is_empty():
+		return null
 
-	if path.get_extension().to_lower() == "mov":
-		var ogv_path := "%s.ogv" % path.get_basename()
-		return load(ogv_path) as VideoStream
+	var candidates: Array[String] = []
+	var ext: String = path.get_extension().to_lower()
+	if ext == "mov":
+		candidates.append("%s.ogv" % path.get_basename())
+	else:
+		candidates.append(path)
+		if ext != "ogv":
+			candidates.append("%s.ogv" % path.get_basename())
+
+	for candidate in candidates:
+		if not ResourceLoader.exists(candidate):
+			continue
+		var loaded: Resource = ResourceLoader.load(candidate)
+		if loaded is VideoStream:
+			return loaded as VideoStream
 
 	return null
 

@@ -11,6 +11,9 @@ extends CharacterBody2D
 @export var task_sign_path: NodePath = NodePath("../DoorSigns/TaskSign")
 @export var task_trigger_distance: float = 120.0
 @export var task_scene_path: String = "res://task_board.tscn"
+@export var codex_sign_path: NodePath = NodePath("../DoorSigns/CodexSign")
+@export var codex_trigger_distance: float = 120.0
+@export var codex_scene_path: String = "res://codex.tscn"
 
 @export var movement_bounds_margin: float = 16.0
 @export var movement_bounds_sprite: NodePath = NodePath("../MapBackground")
@@ -46,6 +49,7 @@ var _last_facing: StringName = &"down"
 var _world_bounds: Rect2 = Rect2()
 var _begin_sign: Node2D = null
 var _task_sign: Node2D = null
+var _codex_sign: Node2D = null
 var _is_switching_scene := false
 
 @onready var _animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -57,6 +61,7 @@ func _ready() -> void:
 	if enable_scene_triggers:
 		_begin_sign = get_node_or_null(begin_sign_path) as Node2D
 		_task_sign = get_node_or_null(task_sign_path) as Node2D
+		_codex_sign = get_node_or_null(codex_sign_path) as Node2D
 	_play_idle()
 
 func refresh_movement_bounds() -> void:
@@ -66,8 +71,8 @@ func get_collision_half_extents() -> Vector2:
 	return _get_collision_half_extents()
 
 func _physics_process(_delta: float) -> void:
-	var x := int(Input.is_key_pressed(KEY_D)) - int(Input.is_key_pressed(KEY_A))
-	var y := int(Input.is_key_pressed(KEY_S)) - int(Input.is_key_pressed(KEY_W))
+	var x: int = int(Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT)) - int(Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT))
+	var y: int = int(Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN)) - int(Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP))
 	_input_dir = Vector2(x, y)
 
 	if _input_dir.length_squared() > 0.0:
@@ -80,6 +85,7 @@ func _physics_process(_delta: float) -> void:
 	if enable_scene_triggers:
 		_check_enter_sky()
 		_check_enter_task()
+		_check_enter_codex()
 
 func _compute_world_bounds() -> void:
 	var s := get_node_or_null(movement_bounds_sprite) as Sprite2D
@@ -351,3 +357,17 @@ func _check_enter_task() -> void:
 	if global_position.distance_to(_task_sign.global_position) <= task_trigger_distance:
 		_is_switching_scene = true
 		get_tree().change_scene_to_file(task_scene_path)
+
+func _check_enter_codex() -> void:
+	if _is_switching_scene:
+		return
+	if _codex_sign == null:
+		return
+	if codex_scene_path.is_empty():
+		return
+	if _input_dir == Vector2.ZERO:
+		return
+
+	if global_position.distance_to(_codex_sign.global_position) <= codex_trigger_distance:
+		_is_switching_scene = true
+		get_tree().change_scene_to_file(codex_scene_path)

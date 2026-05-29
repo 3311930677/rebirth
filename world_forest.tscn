@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://world_page.gd" id="1_world_page"]
+[ext_resource type="Script" path="res://world_forest.gd" id="1_world_page"]
 [ext_resource type="Script" path="res://player.gd" id="2_player"]
 [ext_resource type="Texture2D" uid="uid://fdp8louttcy0" path="res://Sprite/forest background.jpg" id="3_bg"]
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]

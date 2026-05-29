@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bejcby7b30a2i" path="res://world_room.gd" id="1_world_room"]
 [ext_resource type="Script" uid="uid://et1tbyodk4hv" path="res://player.gd" id="2_player"]
 [ext_resource type="Texture2D" uid="uid://d33a3vyhgq0td" path="res://Sprite/room background.jpg" id="3_bg"]
+[ext_resource type="Texture2D" uid="uid://b2hxesa83wn6n" path="res://Sprite/diary.png" id="4_diary"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_painting"]
 size = Vector2(420, 360)
@@ -15,6 +16,9 @@ size = Vector2(300, 320)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_key"]
 size = Vector2(260, 220)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_drawer"]
+size = Vector2(280, 220)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 size = Vector2(28, 44)
@@ -33,8 +37,6 @@ texture = ExtResource("3_bg")
 [node name="PaintingTrigger" type="Area2D" parent="MapBackground" unique_id=2017202733]
 position = Vector2(415, -204)
 collision_layer = 0
-collision_mask = 1
-monitoring = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/PaintingTrigger" unique_id=404737847]
 shape = SubResource("RectangleShape2D_painting")
@@ -42,8 +44,6 @@ shape = SubResource("RectangleShape2D_painting")
 [node name="GlobeTrigger" type="Area2D" parent="MapBackground" unique_id=2007023497]
 position = Vector2(-825, -459)
 collision_layer = 0
-collision_mask = 1
-monitoring = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/GlobeTrigger" unique_id=1012188268]
 shape = SubResource("RectangleShape2D_globe")
@@ -51,8 +51,6 @@ shape = SubResource("RectangleShape2D_globe")
 [node name="TelescopeTrigger" type="Area2D" parent="MapBackground" unique_id=850975495]
 position = Vector2(-1352, -387)
 collision_layer = 0
-collision_mask = 1
-monitoring = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/TelescopeTrigger" unique_id=701358562]
 shape = SubResource("RectangleShape2D_telescope")
@@ -60,11 +58,17 @@ shape = SubResource("RectangleShape2D_telescope")
 [node name="KeyTrigger" type="Area2D" parent="MapBackground" unique_id=624168254]
 position = Vector2(-806, 484)
 collision_layer = 0
-collision_mask = 1
-monitoring = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/KeyTrigger" unique_id=2140824666]
 shape = SubResource("RectangleShape2D_key")
+
+[node name="DrawerTrigger" type="Area2D" parent="MapBackground" unique_id=864742100]
+position = Vector2(1116, 548)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MapBackground/DrawerTrigger" unique_id=245063552]
+position = Vector2(-647, -24)
+shape = SubResource("RectangleShape2D_drawer")
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=2100852554]
 position = Vector2(0, 8)
@@ -93,6 +97,44 @@ anchors_preset = 0
 layout_mode = 0
 expand_mode = 1
 stretch_mode = 6
+
+[node name="OpeningView" type="Control" parent="UI" unique_id=1810927193]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Dimmer" type="ColorRect" parent="UI/OpeningView" unique_id=378030233]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.72)
+
+[node name="OpeningLabel" type="Label" parent="UI/OpeningView" unique_id=1029425165]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -560.0
+offset_top = -120.0
+offset_right = 560.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+text = "书房开场"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="PaintingView" type="Control" parent="UI" unique_id=938387562]
 visible = false
@@ -173,6 +215,107 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 22
 text = "Esc 退出查看"
+horizontal_alignment = 1
+
+[node name="DiaryView" type="Control" parent="UI" unique_id=2018641344]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Dimmer" type="ColorRect" parent="UI/DiaryView" unique_id=788881859]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.75)
+
+[node name="DiaryImage" type="TextureRect" parent="UI/DiaryView" unique_id=164308784]
+modulate = Color(1, 1, 1, 0.2)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -380.0
+offset_top = -250.0
+offset_right = 380.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_diary")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PagePanel" type="Panel" parent="UI/DiaryView" unique_id=1415357259]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -260.0
+offset_right = 420.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PageText" type="Label" parent="UI/DiaryView/PagePanel" unique_id=573001401]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 14.0
+offset_right = -20.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "日记内容"
+autowrap_mode = 3
+
+[node name="PageHint" type="Label" parent="UI/DiaryView" unique_id=575838845]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -62.0
+offset_right = 300.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "A/D 翻页 | Esc 关闭"
+horizontal_alignment = 1
+
+[node name="UnlockHint" type="Label" parent="UI/DiaryView" unique_id=2029167618]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -96.0
+offset_right = 260.0
+offset_bottom = -68.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 22
+text = "解锁图鉴：日记"
 horizontal_alignment = 1
 
 [node name="HintLabel" type="Label" parent="UI" unique_id=594795683]
