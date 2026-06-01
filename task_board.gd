@@ -36,7 +36,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		_esc_confirm_pending,
 		return_scene_path,
 		get_tree(),
-		_set_esc_confirm_pending
+		_set_esc_confirm_pending,
+		Callable(),
+		self
 	):
 		return
 

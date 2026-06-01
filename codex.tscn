@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://codex.gd" id="1_codex"]
 [ext_resource type="Texture2D" path="res://Sprite/diary马赛克版.png" id="2_diary_locked"]
 [ext_resource type="Texture2D" path="res://Sprite/diary.png" id="3_diary"]
+[ext_resource type="Texture2D" path="res://Sprite/宝藏.png" id="4_treasure"]
+[ext_resource type="Texture2D" path="res://Sprite/diary马赛克版.png" id="5_treasure_locked"]
+[ext_resource type="Texture2D" path="res://Sprite/sky.jpg" id="6_sky_bg"]
 
 [node name="Codex" type="Control"]
 layout_mode = 3
@@ -13,14 +16,17 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_codex")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.06, 0.07, 0.09, 1)
+texture = ExtResource("6_sky_bg")
+expand_mode = 1
+stretch_mode = 6
+modulate = Color(0.78, 0.78, 0.86, 1)
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
@@ -43,13 +49,30 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -220.0
+offset_left = -460.0
 offset_top = -190.0
-offset_right = 220.0
+offset_right = -20.0
 offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_diary_locked")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TreasureCard" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = -190.0
+offset_right = 460.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_treasure_locked")
 expand_mode = 1
 stretch_mode = 5
 
@@ -58,13 +81,27 @@ layout_mode = 1
 anchors_preset = 10
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -360.0
+offset_left = -460.0
 offset_top = 485.0
-offset_right = 360.0
+offset_right = -20.0
 offset_bottom = 525.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 22
 text = "图鉴：日记（未解锁）"
+horizontal_alignment = 1
+
+[node name="TreasureStatusLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 20.0
+offset_top = 485.0
+offset_right = 460.0
+offset_bottom = 525.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 22
+text = "图鉴：宝藏（未解锁）"
 horizontal_alignment = 1
 
 [node name="HintLabel" type="Label" parent="."]
@@ -74,9 +111,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -380.0
+offset_left = -520.0
 offset_top = -52.0
-offset_right = 380.0
+offset_right = 520.0
 offset_bottom = -18.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 20

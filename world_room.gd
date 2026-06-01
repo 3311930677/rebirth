@@ -81,6 +81,7 @@ func _ready() -> void:
 	_place_player_at_spawn()
 	if _player != null:
 		_player.refresh_movement_bounds()
+	_restore_world_progress()
 
 
 func _process(delta: float) -> void:
@@ -236,8 +237,7 @@ func _on_inspect_image_clicked() -> void:
 	if item_id == "drawer":
 		_open_diary_from_drawer()
 		return
-	if _active_item.get("clue_revealed", false):
-		return
+	# 线索允许重复点击查看，不做一次性限制。
 	_active_item["clue_revealed"] = true
 	_apply_clue_dialogue_style()
 	_dialogue_label.text = _active_item["clue_text"] as String

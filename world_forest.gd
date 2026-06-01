@@ -9,10 +9,9 @@ extends "res://world_page.gd"
 @export var ground_max_y_ratio: float = 0.98
 @export var ground_min_value: float = 0.14
 
-const PLAYER_MAX_HP: int = 70
+const PLAYER_MAX_HP: int = 50
 const PLAYER_ATTACK_POWER: int = 10
-const ATTACK_COOLDOWN: float = 0.5
-const PROJECTILE_SPEED: float = 780.0
+const PROJECTILE_SPEED: float = 1080.0
 const PROJECTILE_RADIUS: float = 10.0
 const PLAYER_RADIUS: float = 20.0
 const PLAYER_HIT_COOLDOWN: float = 0.5
@@ -23,8 +22,8 @@ const SHEET_COLS: int = 3
 const SHEET_ROWS: int = 3
 const SLIME_SCALE: float = 0.085
 const BAT_SCALE: float = 0.09
-const JUMP_DURATION: float = 0.28
-const JUMP_HEIGHT: float = 30.0
+const JUMP_DURATION: float = 0.42
+const JUMP_HEIGHT: float = 72.0
 
 const SLIME_COUNT: int = 10
 const BAT_COUNT: int = 5
@@ -35,11 +34,19 @@ const BAT_HP: int = 15
 const BAT_DAMAGE: int = 6
 const BAT_SPEED: float = 110.0
 const BAT_GEM_DROP_CHANCE: float = 0.4
+const CELEBRATION_LINES: Array[String] = [
+	"我们成功了！森林恢复了生机！",
+	"太开心了，任务完成！",
+	"去图鉴看看新的发现吧！",
+]
+const CELEBRATION_LINE_DURATION: float = 2.4
+const CELEBRATION_JUMP_INTERVAL: float = 0.52
+const CELEBRATION_IDLE_HINT: String = "通关庆祝中！R 重新开始   Esc 打开操作菜单"
+const CELEBRATION_MENU_HINT: String = "Enter 返回世界选择   R 重新开始   Esc 取消"
 
 var _hp: int = PLAYER_MAX_HP
 var _gems_collected: int = 0
 var _won: bool = false
-var _shot_cooldown_left: float = 0.0
 var _player_hit_cooldown_left: float = 0.0
 var _aim_dir: Vector2 = Vector2.RIGHT
 var _play_rect: Rect2 = Rect2()
@@ -48,6 +55,11 @@ var _bat_drops: int = 0
 var _jump_time_left: float = 0.0
 var _last_valid_player_pos: Vector2 = Vector2.ZERO
 var _ground_image: Image = null
+var _celebration_active: bool = false
+var _celebration_line_index: int = 0
+var _celebration_line_timer: float = 0.0
+var _celebration_jump_timer: float = 0.0
+var _celebration_menu_open: bool = false
 
 var _monsters: Array[Dictionary] = []
 var _projectiles: Array[Dictionary] = []
@@ -59,6 +71,9 @@ var _projectile_layer: Node2D = null
 var _effect_layer: Node2D = null
 var _status_label: Label = null
 var _center_label: Label = null
+var _celebration_overlay: Control = null
+var _celebration_title_label: Label = null
+var _celebration_hint_label: Label = null
 
 var _tex_slime: Texture2D = null
 var _tex_bat: Texture2D = null
@@ -79,14 +94,15 @@ func _ready() -> void:
 	_player_sprite = _player.get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
 	_seed_rng()
 	_start_round()
+	_restore_world_progress()
 
 
 func _process(delta: float) -> void:
 	super._process(delta)
 	_update_aim_direction()
-	_shot_cooldown_left = maxf(0.0, _shot_cooldown_left - delta)
 	_player_hit_cooldown_left = maxf(0.0, _player_hit_cooldown_left - delta)
 	_update_jump_visual(delta)
+	_update_celebration(delta)
 	_constrain_player_to_ground()
 	_update_effects(delta)
 	_update_ui()
@@ -104,6 +120,9 @@ func _physics_process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _won:
+		_handle_celebration_input(event)
+		return
 	if not _won and not is_intro_video_playing():
 		if event is InputEventKey:
 			var key_event: InputEventKey = event as InputEventKey
@@ -161,6 +180,88 @@ func _setup_ui() -> void:
 
 	_center_label.add_theme_color_override("font_color", Color(1.0, 0.95, 0.82, 1.0))
 	_status_label.add_theme_color_override("font_color", Color(1.0, 0.96, 0.86, 1.0))
+	_setup_celebration_ui(font)
+
+
+func _setup_celebration_ui(font: FontFile) -> void:
+	_celebration_overlay = Control.new()
+	_celebration_overlay.name = "ForestCelebration"
+	_celebration_overlay.visible = false
+	_celebration_overlay.anchors_preset = Control.PRESET_FULL_RECT
+	_celebration_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_ui_layer.add_child(_celebration_overlay)
+	_layout_celebration_overlay()
+
+	var dimmer: ColorRect = ColorRect.new()
+	dimmer.name = "Dimmer"
+	dimmer.anchors_preset = Control.PRESET_FULL_RECT
+	dimmer.color = Color(0.02, 0.08, 0.05, 0.34)
+	dimmer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_celebration_overlay.add_child(dimmer)
+
+	var panel: Panel = Panel.new()
+	panel.name = "Panel"
+	panel.anchor_left = 0.5
+	panel.anchor_top = 0.5
+	panel.anchor_right = 0.5
+	panel.anchor_bottom = 0.5
+	panel.offset_left = -520.0
+	panel.offset_top = -146.0
+	panel.offset_right = 520.0
+	panel.offset_bottom = 146.0
+	_celebration_overlay.add_child(panel)
+
+	var panel_style: StyleBoxFlat = StyleBoxFlat.new()
+	panel_style.bg_color = Color(0.08, 0.2, 0.12, 0.93)
+	panel_style.set_corner_radius_all(10)
+	panel_style.border_width_left = 2
+	panel_style.border_width_top = 2
+	panel_style.border_width_right = 2
+	panel_style.border_width_bottom = 2
+	panel_style.border_color = Color(0.72, 0.92, 0.64, 1.0)
+	panel.add_theme_stylebox_override("panel", panel_style)
+
+	_celebration_title_label = Label.new()
+	_celebration_title_label.name = "Title"
+	_celebration_title_label.anchors_preset = Control.PRESET_FULL_RECT
+	_celebration_title_label.offset_left = 24.0
+	_celebration_title_label.offset_top = 28.0
+	_celebration_title_label.offset_right = -24.0
+	_celebration_title_label.offset_bottom = -92.0
+	_celebration_title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_celebration_title_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_celebration_title_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_celebration_title_label.add_theme_font_size_override("font_size", 30)
+	panel.add_child(_celebration_title_label)
+
+	_celebration_hint_label = Label.new()
+	_celebration_hint_label.name = "Hint"
+	_celebration_hint_label.anchor_left = 0.0
+	_celebration_hint_label.anchor_top = 1.0
+	_celebration_hint_label.anchor_right = 1.0
+	_celebration_hint_label.anchor_bottom = 1.0
+	_celebration_hint_label.offset_left = 24.0
+	_celebration_hint_label.offset_top = -58.0
+	_celebration_hint_label.offset_right = -24.0
+	_celebration_hint_label.offset_bottom = -20.0
+	_celebration_hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_celebration_hint_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_celebration_hint_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_celebration_hint_label.add_theme_font_size_override("font_size", 18)
+	_celebration_hint_label.text = CELEBRATION_IDLE_HINT
+	panel.add_child(_celebration_hint_label)
+
+	if font != null:
+		_celebration_title_label.add_theme_font_override("font", font)
+		_celebration_hint_label.add_theme_font_override("font", font)
+
+
+func _layout_celebration_overlay() -> void:
+	if _celebration_overlay == null:
+		return
+	var viewport_rect: Rect2 = get_viewport().get_visible_rect()
+	_celebration_overlay.position = Vector2.ZERO
+	_celebration_overlay.size = viewport_rect.size
 
 
 func _setup_textures() -> void:
@@ -199,11 +300,11 @@ func _start_round() -> void:
 	_hp = PLAYER_MAX_HP
 	_gems_collected = 0
 	_won = false
-	_shot_cooldown_left = 0.0
 	_player_hit_cooldown_left = 0.0
 	_bat_killed = 0
 	_bat_drops = 0
 	_center_label.visible = false
+	_stop_celebration()
 	_place_player_at_spawn()
 	_last_valid_player_pos = _player.global_position
 	if _player != null:
@@ -234,6 +335,7 @@ func _on_viewport_size_changed() -> void:
 	_place_player_at_spawn()
 	if _player != null:
 		_player.refresh_movement_bounds()
+	_layout_celebration_overlay()
 
 
 func _constrain_player_to_ground() -> void:
@@ -375,9 +477,6 @@ func _update_jump_visual(delta: float) -> void:
 func _fire_projectile() -> void:
 	if _player == null:
 		return
-	if _shot_cooldown_left > 0.0:
-		return
-
 	var sprite: Sprite2D = Sprite2D.new()
 	sprite.texture = _tex_ball
 	sprite.centered = true
@@ -390,9 +489,6 @@ func _fire_projectile() -> void:
 		"life": 1.4,
 	}
 	_projectiles.append(projectile)
-	_shot_cooldown_left = ATTACK_COOLDOWN
-
-
 func _update_projectiles(delta: float) -> void:
 	var next: Array[Dictionary] = []
 	for projectile in _projectiles:
@@ -548,8 +644,7 @@ func _update_gems() -> void:
 
 func _trigger_win() -> void:
 	_won = true
-	_center_label.visible = true
-	_center_label.text = "通关成功！"
+	_start_celebration()
 
 
 func _check_win_condition() -> void:
@@ -597,13 +692,221 @@ func _update_effects(delta: float) -> void:
 
 func _update_ui() -> void:
 	var enemy_count: int = _monsters.size()
-	_status_label.text = "HP:%d/50   宝石:%d/3   敌人:%d" % [_hp, _gems_collected, enemy_count]
+	_status_label.text = "HP:%d/%d   宝石:%d/3   敌人:%d" % [_hp, PLAYER_MAX_HP, _gems_collected, enemy_count]
 	if _won:
 		_hint.text = "通关成功！Esc 返回世界选择"
 	elif _gems_collected >= GEM_TARGET:
 		_hint.text = "宝石已集齐，清理剩余敌人！Esc 返回"
 	else:
 		_hint.text = "WASD/方向键移动  左键开火  空格跳跃  Esc 返回"
+
+
+func _start_celebration() -> void:
+	_celebration_active = true
+	_celebration_menu_open = false
+	_celebration_line_index = 0
+	_celebration_line_timer = CELEBRATION_LINE_DURATION
+	_celebration_jump_timer = 0.0
+	if _celebration_title_label != null:
+		_celebration_title_label.text = CELEBRATION_LINES[0]
+	if _celebration_overlay != null:
+		_celebration_overlay.visible = true
+	if _celebration_hint_label != null:
+		_celebration_hint_label.text = CELEBRATION_IDLE_HINT
+	if _player != null:
+		# 通关后只播放庆祝动作，禁止继续移动角色。
+		_player.set_physics_process(false)
+	_center_label.visible = false
+	_start_jump()
+
+
+func _stop_celebration() -> void:
+	_celebration_active = false
+	_celebration_menu_open = false
+	_celebration_line_index = 0
+	_celebration_line_timer = 0.0
+	_celebration_jump_timer = 0.0
+	if _celebration_overlay != null:
+		_celebration_overlay.visible = false
+	if _player != null:
+		_player.set_physics_process(true)
+
+
+func _update_celebration(delta: float) -> void:
+	if not _celebration_active:
+		return
+	_celebration_line_timer -= delta
+	if _celebration_line_timer <= 0.0:
+		_celebration_line_timer = CELEBRATION_LINE_DURATION
+		_celebration_line_index = (_celebration_line_index + 1) % CELEBRATION_LINES.size()
+		if _celebration_title_label != null:
+			_celebration_title_label.text = CELEBRATION_LINES[_celebration_line_index]
+
+	_celebration_jump_timer -= delta
+	if _celebration_jump_timer <= 0.0:
+		_celebration_jump_timer = CELEBRATION_JUMP_INTERVAL
+		_start_jump()
+
+
+func _handle_celebration_input(event: InputEvent) -> void:
+	if not (event is InputEventKey):
+		return
+	var key_event: InputEventKey = event as InputEventKey
+	if not key_event.pressed or key_event.echo:
+		return
+
+	if key_event.keycode == KEY_ESCAPE:
+		_celebration_menu_open = not _celebration_menu_open
+		_refresh_celebration_hint()
+		var viewport: Viewport = get_viewport()
+		if viewport != null:
+			viewport.set_input_as_handled()
+		return
+
+	if key_event.keycode == KEY_R:
+		_start_round()
+		var viewport_r: Viewport = get_viewport()
+		if viewport_r != null:
+			viewport_r.set_input_as_handled()
+		return
+
+	if not _celebration_menu_open:
+		return
+
+	if key_event.keycode == KEY_ENTER or key_event.keycode == KEY_KP_ENTER:
+		_save_world_progress_before_exit()
+		get_tree().change_scene_to_file(return_scene_path)
+		var viewport_enter: Viewport = get_viewport()
+		if viewport_enter != null:
+			viewport_enter.set_input_as_handled()
+
+
+func _refresh_celebration_hint() -> void:
+	if _celebration_hint_label == null:
+		return
+	_celebration_hint_label.text = CELEBRATION_MENU_HINT if _celebration_menu_open else CELEBRATION_IDLE_HINT
+
+
+func _build_world_progress_snapshot() -> Dictionary:
+	var snapshot: Dictionary = super._build_world_progress_snapshot()
+	snapshot["hp"] = _hp
+	snapshot["gems_collected"] = _gems_collected
+	snapshot["won"] = _won
+	snapshot["bat_killed"] = _bat_killed
+	snapshot["bat_drops"] = _bat_drops
+	snapshot["player_hit_cd"] = _player_hit_cooldown_left
+
+	var monsters_data: Array[Dictionary] = []
+	for monster in _monsters:
+		var node: Node2D = monster.get("node", null) as Node2D
+		if node == null:
+			continue
+		monsters_data.append({
+			"kind": monster.get("kind", "slime"),
+			"hp": int(monster.get("hp", SLIME_HP)),
+			"bob_t": float(monster.get("bob_t", 0.0)),
+			"face_right": bool(monster.get("face_right", true)),
+			"x": node.global_position.x,
+			"y": node.global_position.y,
+		})
+	snapshot["monsters"] = monsters_data
+
+	var gems_data: Array[Dictionary] = []
+	for gem in _gems:
+		var gem_node: Sprite2D = gem.get("node", null) as Sprite2D
+		if gem_node == null:
+			continue
+		gems_data.append({
+			"x": gem_node.global_position.x,
+			"y": gem_node.global_position.y,
+		})
+	snapshot["gems"] = gems_data
+
+	var projectiles_data: Array[Dictionary] = []
+	for projectile in _projectiles:
+		var projectile_node: Sprite2D = projectile.get("node", null) as Sprite2D
+		if projectile_node == null:
+			continue
+		var dir: Vector2 = projectile.get("dir", Vector2.RIGHT) as Vector2
+		projectiles_data.append({
+			"x": projectile_node.global_position.x,
+			"y": projectile_node.global_position.y,
+			"dir_x": dir.x,
+			"dir_y": dir.y,
+			"life": float(projectile.get("life", 0.0)),
+		})
+	snapshot["projectiles"] = projectiles_data
+	return snapshot
+
+
+func _apply_world_progress_snapshot(snapshot: Dictionary) -> void:
+	super._apply_world_progress_snapshot(snapshot)
+	if snapshot.is_empty():
+		return
+
+	_clear_round_entities()
+	_stop_celebration()
+	_center_label.visible = false
+
+	_hp = int(snapshot.get("hp", PLAYER_MAX_HP))
+	_gems_collected = int(snapshot.get("gems_collected", 0))
+	_won = bool(snapshot.get("won", false))
+	_bat_killed = int(snapshot.get("bat_killed", 0))
+	_bat_drops = int(snapshot.get("bat_drops", 0))
+	_player_hit_cooldown_left = float(snapshot.get("player_hit_cd", 0.0))
+
+	var monsters_raw: Array = snapshot.get("monsters", []) as Array
+	for raw in monsters_raw:
+		if raw is not Dictionary:
+			continue
+		var data: Dictionary = raw as Dictionary
+		var kind: String = data.get("kind", "slime") as String
+		var node: Node2D = _create_monster_visual(kind)
+		_entity_layer.add_child(node)
+		node.global_position = Vector2(
+			float(data.get("x", 0.0)),
+			float(data.get("y", 0.0))
+		)
+		var monster: Dictionary = {
+			"kind": kind,
+			"node": node,
+			"hp": int(data.get("hp", SLIME_HP if kind == "slime" else BAT_HP)),
+			"damage": SLIME_DAMAGE if kind == "slime" else BAT_DAMAGE,
+			"speed": SLIME_SPEED if kind == "slime" else BAT_SPEED,
+			"radius": 16.0 if kind == "slime" else 13.0,
+			"bob_t": float(data.get("bob_t", 0.0)),
+			"face_right": bool(data.get("face_right", true)),
+		}
+		if kind == "bat":
+			_apply_bat_facing(node, bool(monster["face_right"]))
+		_monsters.append(monster)
+
+	var gems_raw: Array = snapshot.get("gems", []) as Array
+	for raw in gems_raw:
+		if raw is not Dictionary:
+			continue
+		var data: Dictionary = raw as Dictionary
+		_spawn_gem(Vector2(float(data.get("x", 0.0)), float(data.get("y", 0.0))))
+
+	var projectiles_raw: Array = snapshot.get("projectiles", []) as Array
+	for raw in projectiles_raw:
+		if raw is not Dictionary:
+			continue
+		var data: Dictionary = raw as Dictionary
+		var sprite: Sprite2D = Sprite2D.new()
+		sprite.texture = _tex_ball
+		sprite.centered = true
+		sprite.global_position = Vector2(float(data.get("x", 0.0)), float(data.get("y", 0.0)))
+		_projectile_layer.add_child(sprite)
+		_projectiles.append({
+			"node": sprite,
+			"dir": Vector2(float(data.get("dir_x", 1.0)), float(data.get("dir_y", 0.0))).normalized(),
+			"life": float(data.get("life", 0.0)),
+		})
+
+	if _won:
+		_start_celebration()
+	_update_ui()
 
 
 func _clear_round_entities() -> void:

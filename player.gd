@@ -8,12 +8,15 @@ extends CharacterBody2D
 @export var begin_sign_path: NodePath = NodePath("../DoorSigns/BeginSign")
 @export var begin_trigger_distance: float = 120.0
 @export var sky_scene_path: String = "res://sky_select.tscn"
+@export var forest_scene_path_for_reset: String = "res://world_forest.tscn"
 @export var task_sign_path: NodePath = NodePath("../DoorSigns/TaskSign")
 @export var task_trigger_distance: float = 120.0
 @export var task_scene_path: String = "res://task_board.tscn"
 @export var codex_sign_path: NodePath = NodePath("../DoorSigns/CodexSign")
 @export var codex_trigger_distance: float = 120.0
 @export var codex_scene_path: String = "res://codex.tscn"
+@export var go_on_sign_path: NodePath = NodePath("../DoorSigns/GoOnSign")
+@export var go_on_trigger_distance: float = 120.0
 
 @export var movement_bounds_margin: float = 16.0
 @export var movement_bounds_sprite: NodePath = NodePath("../MapBackground")
@@ -43,6 +46,7 @@ const REST_FACING_FRAME := {
 
 const WALK_BLOB_MIN_AREA := 20000
 const WALK_BLOB_ALPHA := 30.0 / 255.0
+const WorldProgressState = preload("res://world_progress_state.gd")
 
 var _input_dir := Vector2.ZERO
 var _last_facing: StringName = &"down"
@@ -50,6 +54,7 @@ var _world_bounds: Rect2 = Rect2()
 var _begin_sign: Node2D = null
 var _task_sign: Node2D = null
 var _codex_sign: Node2D = null
+var _go_on_sign: Node2D = null
 var _is_switching_scene := false
 
 @onready var _animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -62,6 +67,7 @@ func _ready() -> void:
 		_begin_sign = get_node_or_null(begin_sign_path) as Node2D
 		_task_sign = get_node_or_null(task_sign_path) as Node2D
 		_codex_sign = get_node_or_null(codex_sign_path) as Node2D
+		_go_on_sign = get_node_or_null(go_on_sign_path) as Node2D
 	_play_idle()
 
 func refresh_movement_bounds() -> void:
@@ -86,6 +92,7 @@ func _physics_process(_delta: float) -> void:
 		_check_enter_sky()
 		_check_enter_task()
 		_check_enter_codex()
+		_check_enter_go_on()
 
 func _compute_world_bounds() -> void:
 	var s := get_node_or_null(movement_bounds_sprite) as Sprite2D
@@ -341,6 +348,8 @@ func _check_enter_sky() -> void:
 		return
 
 	if global_position.distance_to(_begin_sign.global_position) <= begin_trigger_distance:
+		# 从主场景“开始游戏”进入世界选择前，仅重置 forest 的战斗快照。
+		WorldProgressState.clear_world_snapshot(forest_scene_path_for_reset)
 		_is_switching_scene = true
 		get_tree().change_scene_to_file(sky_scene_path)
 
@@ -371,3 +380,23 @@ func _check_enter_codex() -> void:
 	if global_position.distance_to(_codex_sign.global_position) <= codex_trigger_distance:
 		_is_switching_scene = true
 		get_tree().change_scene_to_file(codex_scene_path)
+
+
+func _check_enter_go_on() -> void:
+	if _is_switching_scene:
+		return
+	if _go_on_sign == null:
+		return
+	if _input_dir == Vector2.ZERO:
+		return
+	if global_position.distance_to(_go_on_sign.global_position) > go_on_trigger_distance:
+		return
+
+	var target_scene: String = WorldProgressState.get_last_world_scene(sky_scene_path)
+	if target_scene.is_empty():
+		target_scene = sky_scene_path
+	if target_scene.is_empty():
+		return
+
+	_is_switching_scene = true
+	get_tree().change_scene_to_file(target_scene)

@@ -103,6 +103,11 @@ position = Vector2(108.00001, -211.99997)
 scale = Vector2(0.12, 0.12)
 texture = ExtResource("8_codex")
 
+[node name="InabaSign" type="Sprite2D" parent="DoorSigns"]
+z_index = -1
+position = Vector2(874, -110)
+scale = Vector2(0.16, 0.16)
+
 [node name="RoomBlockers" type="Node2D" parent="." unique_id=198614033]
 
 [node name="FurnitureBlockerA" type="StaticBody2D" parent="RoomBlockers" unique_id=310463813]

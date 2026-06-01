@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://et1tbyodk4hv" path="res://player.gd" id="2_player"]
 [ext_resource type="Texture2D" uid="uid://cnknoxki60bfc" path="res://Sprite/island background.jpg" id="3_bg"]
 [ext_resource type="Texture2D" uid="uid://5xxej2qcoh88" path="res://Sprite/宝藏.png" id="4_treasure"]
+[ext_resource type="Texture2D" uid="uid://divyr658ctamo" path="res://Sprite/pixsora.png" id="5_codex"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lighthouse"]
 size = Vector2(280, 260)
@@ -106,6 +107,21 @@ offset_bottom = -16.0
 theme_override_font_sizes/font_size = 18
 text = "Esc 返回世界选择"
 horizontal_alignment = 1
+
+[node name="CodexEntry" type="TextureRect" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -170.0
+offset_top = 24.0
+offset_right = -38.0
+offset_bottom = 156.0
+grow_horizontal = 0
+texture = ExtResource("5_codex")
+expand_mode = 1
+stretch_mode = 5
+mouse_filter = 2
 
 [node name="IntroDialoguePanel" type="Panel" parent="UI" unique_id=954670005]
 visible = false

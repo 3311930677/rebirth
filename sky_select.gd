@@ -19,7 +19,7 @@ const EscExitHelper = preload("res://esc_exit_helper.gd")
 @export var option_height: float = 240.0
 @export var option_texture_height: float = 185.0
 
-const OPTION_NAMES := ["island", "room", "forest", "continue"]
+const OPTION_NAMES := ["room", "island", "forest", "continue"]
 
 var _selected_index := 0
 var _esc_confirm_pending := false
@@ -33,11 +33,11 @@ var _option_nodes: Array[Control] = []
 @onready var _hint_label: Label = $HintLabel
 
 func _ready() -> void:
-	_world_scene_paths = [island_scene_path, room_scene_path, forest_scene_path, ""]
-	_option_texture_paths = [island_option_path, room_option_path, forest_option_path, continue_option_path]
+	_world_scene_paths = [room_scene_path, island_scene_path, forest_scene_path, ""]
+	_option_texture_paths = [room_option_path, island_option_path, forest_option_path, continue_option_path]
 	_option_nodes = [
-		$OptionsTrack/OptionIsland,
 		$OptionsTrack/OptionRoom,
+		$OptionsTrack/OptionIsland,
 		$OptionsTrack/OptionForest,
 		$OptionsTrack/OptionContinue
 	]
@@ -53,7 +53,9 @@ func _input(event: InputEvent) -> void:
 		_esc_confirm_pending,
 		return_scene_path,
 		get_tree(),
-		_set_esc_confirm_pending
+		_set_esc_confirm_pending,
+		Callable(),
+		self
 	):
 		return
 

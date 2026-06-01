@@ -1,6 +1,7 @@
 extends Node2D
 
 const EscExitHelper = preload("res://esc_exit_helper.gd")
+const WorldProgressState = preload("res://world_progress_state.gd")
 
 @export var world_name: String = "world"
 @export var background_path: String = ""
@@ -28,6 +29,7 @@ var _intro_video_rect: TextureRect = null
 
 func _ready() -> void:
 	BgmPlayer.play(world_name)
+	WorldProgressState.mark_last_world(_get_current_scene_path())
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
 	_apply_background()
 	_place_player_at_center()
@@ -70,15 +72,29 @@ func _on_viewport_size_changed() -> void:
 	_fit_intro_video_overlay()
 	_fit_intro_overlay()
 
+func _input(event: InputEvent) -> void:
+	if _handle_exit_input(event):
+		var viewport: Viewport = get_viewport()
+		if viewport != null:
+			viewport.set_input_as_handled()
+
+
 func _unhandled_input(event: InputEvent) -> void:
+	_handle_exit_input(event)
+
+
+func _handle_exit_input(event: InputEvent) -> bool:
 	if EscExitHelper.handle_input(
 		event,
 		_esc_confirm_pending,
 		return_scene_path,
 		get_tree(),
-		_set_esc_confirm_pending
+		_set_esc_confirm_pending,
+		Callable(self, "_save_world_progress_before_exit"),
+		self
 	):
-		return
+		return true
+	return false
 
 func _set_esc_confirm_pending(pending: bool) -> void:
 	_esc_confirm_pending = pending
@@ -121,15 +137,24 @@ func _prepare_intro() -> void:
 		return
 
 	var dir: DirAccess = DirAccess.open(intro_frames_dir)
-	if dir == null:
-		return
-
 	var names: Array[String] = []
-	for raw_name in dir.get_files():
-		var file_name: String = str(raw_name)
-		if file_name.to_lower().ends_with(".png"):
-			names.append(file_name)
-	names.sort()
+	if dir != null:
+		for raw_name in dir.get_files():
+			var file_name: String = str(raw_name)
+			if file_name.to_lower().ends_with(".png"):
+				names.append(file_name)
+		names.sort()
+
+	# 导出后有些平台/打包方式下目录枚举可能为空，回退为固定序号探测。
+	if names.is_empty():
+		for i in range(1, 301):
+			var numbered_name: String = "frame_%03d.png" % i
+			var numbered_path: String = intro_frames_dir.path_join(numbered_name)
+			if ResourceLoader.exists(numbered_path):
+				names.append(numbered_name)
+				continue
+			if not names.is_empty():
+				break
 
 	for file_name in names:
 		var tex: Texture2D = load(intro_frames_dir.path_join(file_name)) as Texture2D
@@ -137,6 +162,12 @@ func _prepare_intro() -> void:
 			_intro_frames.append(tex)
 
 func _play_intro_if_any() -> void:
+	if _consume_skip_intro_once_flag():
+		if _intro_overlay != null:
+			_intro_overlay.visible = false
+		_intro_playing = false
+		return
+
 	if not intro_video_path.is_empty():
 		_play_intro_video()
 		return
@@ -263,3 +294,60 @@ func _fit_intro_overlay() -> void:
 	_intro_overlay.size = viewport_size
 	_intro_image.position = Vector2.ZERO
 	_intro_image.size = viewport_size
+
+
+func _consume_skip_intro_once_flag() -> bool:
+	var tree: SceneTree = get_tree()
+	if tree == null:
+		return false
+	if not tree.has_meta("skip_intro_once_scene"):
+		return false
+	var target_scene: String = str(tree.get_meta("skip_intro_once_scene", ""))
+	var current_scene_path: String = _get_current_scene_path()
+	if target_scene.is_empty() or current_scene_path != target_scene:
+		return false
+	tree.remove_meta("skip_intro_once_scene")
+	return true
+
+
+func _save_world_progress_before_exit() -> void:
+	var scene_path: String = _get_current_scene_path()
+	if scene_path.is_empty():
+		return
+	var snapshot: Dictionary = _build_world_progress_snapshot()
+	WorldProgressState.save_world_snapshot(scene_path, snapshot)
+
+
+func _restore_world_progress() -> void:
+	var scene_path: String = _get_current_scene_path()
+	if scene_path.is_empty():
+		return
+	var snapshot: Dictionary = WorldProgressState.get_world_snapshot(scene_path)
+	if snapshot.is_empty():
+		return
+	_apply_world_progress_snapshot(snapshot)
+
+
+func _build_world_progress_snapshot() -> Dictionary:
+	var snapshot: Dictionary = {}
+	if _player != null:
+		snapshot["player_x"] = _player.global_position.x
+		snapshot["player_y"] = _player.global_position.y
+	return snapshot
+
+
+func _apply_world_progress_snapshot(snapshot: Dictionary) -> void:
+	if _player == null:
+		return
+	if snapshot.has("player_x") and snapshot.has("player_y"):
+		_player.global_position = Vector2(
+			float(snapshot.get("player_x", _player.global_position.x)),
+			float(snapshot.get("player_y", _player.global_position.y))
+		)
+
+
+func _get_current_scene_path() -> String:
+	var current_scene: Node = get_tree().current_scene
+	if current_scene == null:
+		return ""
+	return current_scene.scene_file_path

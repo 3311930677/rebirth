@@ -2,6 +2,7 @@ extends "res://world_page.gd"
 
 const IslandTaskData = preload("res://island_task_data.gd")
 const IslandTaskState = preload("res://island_task_state.gd")
+const CodexState = preload("res://codex_state.gd")
 
 const WATER_GRID_SIZE := Vector2i(24, 24)
 const WATER_CELL_THRESHOLD := 0.55
@@ -24,6 +25,10 @@ var _ending_open: bool = false
 var _active_task: Dictionary = {}
 var _zone_hint_task_id: String = ""
 var _pending_ending_after_message: bool = false
+var _pending_messages: Array[String] = []
+@export var codex_scene_path: String = "res://codex.tscn"
+
+const GRANDPA_TREASURE_LINE: String = "祖父的声音仿佛穿过海风：暮秋，你终于找到了。别害怕远方，带着这份勇气继续前行吧。"
 
 @onready var _intro_dialogue_panel: Panel = $UI/IntroDialoguePanel
 @onready var _intro_dialogue_label: Label = $UI/IntroDialoguePanel/IntroDialogueLabel
@@ -38,6 +43,7 @@ var _pending_ending_after_message: bool = false
 @onready var _ending_view: Control = $UI/EndingView
 @onready var _ending_label: Label = $UI/EndingView/EndingPanel/EndingLabel
 @onready var _ending_hint: Label = $UI/EndingView/EndingHint
+@onready var _codex_entry: TextureRect = $UI/CodexEntry
 
 
 func _ready() -> void:
@@ -46,6 +52,7 @@ func _ready() -> void:
 	_build_water_blockers()
 	_build_task_triggers()
 	_setup_task_ui()
+	_restore_world_progress()
 	_update_zone_hint()
 
 
@@ -93,13 +100,13 @@ func _input(event: InputEvent) -> void:
 	if _ending_open:
 		if EscExitHelper.is_enter_pressed(event) or event.is_action_pressed("ui_cancel"):
 			_close_ending()
-			get_viewport().set_input_as_handled()
+			_mark_input_handled()
 		return
 
 	if _message_open:
 		if EscExitHelper.is_enter_pressed(event) or event.is_action_pressed("ui_cancel"):
 			_close_message()
-			get_viewport().set_input_as_handled()
+			_mark_input_handled()
 		return
 
 	if _input_open:
@@ -113,10 +120,17 @@ func _input(event: InputEvent) -> void:
 		var mouse_event: InputEventMouseButton = event as InputEventMouseButton
 		if not mouse_event.pressed or mouse_event.button_index != MOUSE_BUTTON_LEFT:
 			return
+		if _is_click_on_codex_entry(mouse_event.position):
+			_save_world_progress_before_exit()
+			get_tree().set_meta("codex_return_scene_path", "res://world_island.tscn")
+			get_tree().set_meta("codex_quick_return", true)
+			get_tree().change_scene_to_file(codex_scene_path)
+			_mark_input_handled()
+			return
 		for item in _task_items:
 			if item.get("was_in_zone", false):
 				_on_task_zone_clicked(item)
-				get_viewport().set_input_as_handled()
+				_mark_input_handled()
 				return
 
 
@@ -294,12 +308,12 @@ func _open_input_dialog(item: Dictionary) -> void:
 func _handle_input_dialog(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		_close_input_dialog()
-		get_viewport().set_input_as_handled()
+		_mark_input_handled()
 		return
 
 	if EscExitHelper.is_enter_pressed(event):
 		_submit_input_answer()
-		get_viewport().set_input_as_handled()
+		_mark_input_handled()
 
 
 func _submit_input_answer() -> void:
@@ -317,6 +331,9 @@ func _submit_input_answer() -> void:
 func _complete_task(item: Dictionary) -> void:
 	var task_id: String = item.get("id", "") as String
 	IslandTaskState.complete_task(task_id)
+	if task_id == "treasure":
+		CodexState.unlock_treasure()
+		_pending_messages.append(GRANDPA_TREASURE_LINE)
 	_close_input_dialog()
 	if IslandTaskState.all_complete() and not IslandTaskState.is_ending_seen():
 		_pending_ending_after_message = true
@@ -345,6 +362,11 @@ func _close_message() -> void:
 	_hint.visible = true
 	_update_zone_hint()
 	_release_player_control()
+	if not _pending_messages.is_empty():
+		var next_message: String = _pending_messages[0]
+		_pending_messages.remove_at(0)
+		_show_message(next_message)
+		return
 	if _pending_ending_after_message:
 		_pending_ending_after_message = false
 		_show_ending()
@@ -398,6 +420,20 @@ func _release_player_control() -> void:
 		or is_intro_video_playing()
 	)
 	_player.set_physics_process(not locked)
+
+
+func _is_click_on_codex_entry(screen_pos: Vector2) -> bool:
+	if _codex_entry == null or not _codex_entry.visible:
+		return false
+	if codex_scene_path.is_empty():
+		return false
+	return _codex_entry.get_global_rect().has_point(screen_pos)
+
+
+func _mark_input_handled() -> void:
+	var viewport: Viewport = get_viewport()
+	if viewport != null:
+		viewport.set_input_as_handled()
 
 
 func _build_water_blockers() -> void:

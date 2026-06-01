@@ -23,8 +23,13 @@ const GUIDE_TEXT := """使用 WASD 控制角色移动。
   · 靠近设置图标，按 Enter → 打开设置
 
 世界场景
-  · 按 Esc 返回世界选择（需再按 Enter 确认）
+  · 按 Esc 可稳定呼出返回确认，再按 Enter 返回世界选择
   · 靠近特定物品可触发查看与对话
+
+forest 场景战斗
+  · 左键点击即可发射一发光球（无射速上限）
+  · 空格触发更高、滞空更久的跳跃
+  · 左键朝向鼠标位置开火，适合边走位边输出
 
 提示：设置中的音量会应用到所有场景。"""
 
@@ -116,7 +121,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			_page = Page.MAIN
 			_scroll.scroll_vertical = 0
 			_refresh()
-		get_viewport().set_input_as_handled()
+		var viewport: Viewport = get_viewport()
+		if viewport != null:
+			viewport.set_input_as_handled()
 		return
 
 	match _page:

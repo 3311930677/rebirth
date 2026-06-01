@@ -18,6 +18,7 @@ texture = ExtResource("3_bg")
 
 [node name="Player" type="CharacterBody2D" parent="."]
 script = ExtResource("2_player")
+sprite_scale = 0.19
 enable_scene_triggers = false
 movement_bounds_sprite = NodePath("../MapBackground")
 movement_bounds_margin = 24.0

@@ -3,6 +3,7 @@ extends RefCounted
 class_name CodexState
 
 const SAVE_PATH := "user://codex_state.json"
+const IslandTaskState = preload("res://island_task_state.gd")
 
 
 static func is_diary_unlocked() -> bool:
@@ -10,9 +11,27 @@ static func is_diary_unlocked() -> bool:
 	return bool(state.get("diary_unlocked", false))
 
 
+static func is_treasure_unlocked() -> bool:
+	var state: Dictionary = _load_state()
+	if bool(state.get("treasure_unlocked", false)):
+		return true
+	# 兼容旧存档：若沙滩宝藏任务已完成，自动补写图鉴解锁状态。
+	if IslandTaskState.is_task_complete("treasure"):
+		state["treasure_unlocked"] = true
+		_save_state(state)
+		return true
+	return false
+
+
 static func unlock_diary() -> void:
 	var state: Dictionary = _load_state()
 	state["diary_unlocked"] = true
+	_save_state(state)
+
+
+static func unlock_treasure() -> void:
+	var state: Dictionary = _load_state()
+	state["treasure_unlocked"] = true
 	_save_state(state)
 
 
