@@ -12,7 +12,7 @@ const WorldProgressState = preload("res://world_progress_state.gd")
 @export var intro_video_path: String = ""
 
 @onready var _background: Sprite2D = $MapBackground
-@onready var _player: CharacterBody2D = $Player
+@onready var _player: CharacterBody2D = get_node_or_null("Player") as CharacterBody2D
 @onready var _hint: Label = $UI/HintLabel
 @onready var _ui_layer: CanvasLayer = $UI
 @onready var _intro_overlay: Control = get_node_or_null("UI/IntroOverlay") as Control

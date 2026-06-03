@@ -89,6 +89,48 @@ horizontal_alignment = 1
 theme_override_font_sizes/font_size = 28
 text = "forest"
 
+[node name="OptionDream" type="Control" parent="OptionsTrack"]
+layout_mode = 0
+offset_right = 280.0
+offset_bottom = 150.0
+
+[node name="Texture" type="TextureRect" parent="OptionsTrack/OptionDream"]
+layout_mode = 0
+offset_right = 280.0
+offset_bottom = 120.0
+stretch_mode = 6
+self_modulate = Color(0.9, 0.88, 1, 1)
+
+[node name="Label" type="Label" parent="OptionsTrack/OptionDream"]
+layout_mode = 0
+offset_top = 122.0
+offset_right = 280.0
+offset_bottom = 150.0
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 28
+text = "dream"
+
+[node name="OptionReality" type="Control" parent="OptionsTrack"]
+layout_mode = 0
+offset_right = 280.0
+offset_bottom = 150.0
+
+[node name="Texture" type="TextureRect" parent="OptionsTrack/OptionReality"]
+layout_mode = 0
+offset_right = 280.0
+offset_bottom = 120.0
+stretch_mode = 6
+self_modulate = Color(0.88, 0.92, 1, 1)
+
+[node name="Label" type="Label" parent="OptionsTrack/OptionReality"]
+layout_mode = 0
+offset_top = 122.0
+offset_right = 280.0
+offset_bottom = 150.0
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 28
+text = "reality"
+
 [node name="OptionContinue" type="Control" parent="OptionsTrack"]
 layout_mode = 0
 offset_right = 280.0

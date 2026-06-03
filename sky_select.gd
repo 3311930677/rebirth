@@ -6,20 +6,24 @@ const EscExitHelper = preload("res://esc_exit_helper.gd")
 @export var island_option_path: String = "res://Sprite/island.png"
 @export var room_option_path: String = "res://Sprite/room.png"
 @export var forest_option_path: String = "res://Sprite/forest.png"
+@export var dream_option_path: String = "res://Sprite/dream.png"
+@export var reality_option_path: String = "res://Sprite/reality.png"
 @export var continue_option_path: String = "res://Sprite/continue.png"
 
 @export var island_scene_path: String = "res://world_island.tscn"
 @export var room_scene_path: String = "res://world_room.tscn"
 @export var forest_scene_path: String = "res://world_forest.tscn"
+@export var dream_scene_path: String = "res://world_dream.tscn"
+@export var reality_scene_path: String = "res://world_reality.tscn"
 @export var return_scene_path: String = "res://node_2d.tscn"
 
 @export var switch_duration: float = 0.2
-@export var option_spacing: float = 390.0
+@export var option_spacing: float = 320.0
 @export var option_width: float = 360.0
 @export var option_height: float = 240.0
 @export var option_texture_height: float = 185.0
 
-const OPTION_NAMES := ["room", "island", "forest", "continue"]
+const OPTION_NAMES := ["room", "island", "forest", "dream", "reality", "continue"]
 
 var _selected_index := 0
 var _esc_confirm_pending := false
@@ -33,12 +37,28 @@ var _option_nodes: Array[Control] = []
 @onready var _hint_label: Label = $HintLabel
 
 func _ready() -> void:
-	_world_scene_paths = [room_scene_path, island_scene_path, forest_scene_path, ""]
-	_option_texture_paths = [room_option_path, island_option_path, forest_option_path, continue_option_path]
+	_world_scene_paths = [
+		room_scene_path,
+		island_scene_path,
+		forest_scene_path,
+		dream_scene_path,
+		reality_scene_path,
+		""
+	]
+	_option_texture_paths = [
+		room_option_path,
+		island_option_path,
+		forest_option_path,
+		dream_option_path,
+		reality_option_path,
+		continue_option_path
+	]
 	_option_nodes = [
 		$OptionsTrack/OptionRoom,
 		$OptionsTrack/OptionIsland,
 		$OptionsTrack/OptionForest,
+		$OptionsTrack/OptionDream,
+		$OptionsTrack/OptionReality,
 		$OptionsTrack/OptionContinue
 	]
 

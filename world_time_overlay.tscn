@@ -1,0 +1,60 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://world_time_overlay.gd" id="1_clock"]
+
+[node name="WorldTimeOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 320.0
+offset_bottom = 120.0
+mouse_filter = 2
+script = ExtResource("1_clock")
+
+[node name="ClockPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 304.0
+offset_bottom = 104.0
+
+[node name="Glow" type="ColorRect" parent="ClockPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.08, 0.12, 0.22, 0.72)
+
+[node name="TimeLabel" type="Label" parent="ClockPanel"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 10.0
+offset_right = 220.0
+offset_bottom = 58.0
+theme_override_colors/font_color = Color(0.92, 0.97, 1, 1)
+theme_override_colors/font_outline_color = Color(0.15, 0.35, 0.55, 0.9)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 42
+text = "00:00"
+
+[node name="SecondsLabel" type="Label" parent="ClockPanel"]
+layout_mode = 0
+offset_left = 214.0
+offset_top = 18.0
+offset_right = 272.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0.55, 0.82, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "00"
+
+[node name="DateLabel" type="Label" parent="ClockPanel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 58.0
+offset_right = 276.0
+offset_bottom = 92.0
+theme_override_colors/font_color = Color(0.72, 0.8, 0.92, 1)
+theme_override_font_sizes/font_size = 18
+text = "2026.06.03  星期一"

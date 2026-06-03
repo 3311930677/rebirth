@@ -18,10 +18,16 @@ config/icon="res://icon.svg"
 [autoload]
 
 BgmPlayer="*res://bgm_player.gd"
+ScheduleData="*res://schedule_data.gd"
+ContentSync="*res://content_sync.gd"
 
 [physics]
 
 3d/physics_engine="Jolt Physics"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/map_blocker_editor/plugin.cfg")
 
 [rendering]
 

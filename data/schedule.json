@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "events": [
+    {
+      "id": "exam_academic_lang_2",
+      "title": "学术语言与研究方法 II",
+      "date": "2026-06-05",
+      "time_start": "15:00",
+      "time_end": "17:00",
+      "location": "27-0102",
+      "category": "exam",
+      "notes": "固定安排"
+    },
+    {
+      "id": "exam_info_security",
+      "title": "信息安全",
+      "date": "2026-06-12",
+      "time_start": "",
+      "time_end": "",
+      "location": "未知",
+      "category": "exam",
+      "notes": "考试时间不确定"
+    },
+    {
+      "id": "exam_computer_network",
+      "title": "计算机网络",
+      "date": "2026-06-15",
+      "time_start": "14:30",
+      "time_end": "16:30",
+      "location": "27教0101",
+      "category": "exam",
+      "notes": "固定安排"
+    },
+    {
+      "id": "exam_probability",
+      "title": "概率论与数理统计",
+      "date": "2026-06-16",
+      "time_start": "10:00",
+      "time_end": "12:00",
+      "location": "27-302",
+      "category": "exam",
+      "notes": "固定安排"
+    },
+    {
+      "id": "exam_discrete_math",
+      "title": "离散数学",
+      "date": "2026-06-26",
+      "time_start": "09:00",
+      "time_end": "11:00",
+      "location": "8教605",
+      "category": "exam",
+      "notes": "固定安排"
+    },
+    {
+      "id": "exam_xjp_thought",
+      "title": "习近平新时代中国特色社会主义思想概论",
+      "date": "2026-06-27",
+      "time_start": "15:00",
+      "time_end": "17:00",
+      "location": "27-0406",
+      "category": "exam",
+      "notes": "固定安排"
+    }
+  ]
+}

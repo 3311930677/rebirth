@@ -21,6 +21,10 @@ extends CharacterBody2D
 @export var movement_bounds_margin: float = 16.0
 @export var movement_bounds_sprite: NodePath = NodePath("../MapBackground")
 @export var enable_scene_triggers: bool = true
+@export var collision_debug_visible: bool = false:
+	set(value):
+		collision_debug_visible = value
+		queue_redraw()
 
 const SHEET_PATHS := {
 	&"down": "res://Sprite/down.png",
@@ -73,6 +77,21 @@ func _ready() -> void:
 func refresh_movement_bounds() -> void:
 	_compute_world_bounds()
 
+
+func get_collision_debug_rect() -> Rect2:
+	if _collision_shape == null or _collision_shape.shape == null:
+		return Rect2()
+	var shape := _collision_shape.shape
+	if shape is RectangleShape2D:
+		var size: Vector2 = (shape as RectangleShape2D).size
+		return Rect2(_collision_shape.position - size * 0.5, size)
+	if shape is CircleShape2D:
+		var radius: float = (shape as CircleShape2D).radius
+		var diameter: Vector2 = Vector2(radius, radius) * 2.0
+		return Rect2(_collision_shape.position - Vector2(radius, radius), diameter)
+	return Rect2()
+
+
 func get_collision_half_extents() -> Vector2:
 	return _get_collision_half_extents()
 
@@ -93,6 +112,19 @@ func _physics_process(_delta: float) -> void:
 		_check_enter_task()
 		_check_enter_codex()
 		_check_enter_go_on()
+	if collision_debug_visible:
+		queue_redraw()
+
+
+func _draw() -> void:
+	if not collision_debug_visible:
+		return
+	var rect := get_collision_debug_rect()
+	if rect.size == Vector2.ZERO:
+		return
+	draw_rect(rect, Color(1.0, 0.2, 0.2, 0.35), true)
+	draw_rect(rect, Color(1.0, 0.1, 0.1, 0.95), false, 2.0)
+
 
 func _compute_world_bounds() -> void:
 	var s := get_node_or_null(movement_bounds_sprite) as Sprite2D

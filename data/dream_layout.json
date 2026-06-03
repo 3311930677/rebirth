@@ -1,0 +1,411 @@
+{
+  "blockers": [
+    {
+      "name": "VoidTop",
+      "uv": [
+        0.5,
+        0.018
+      ],
+      "uv_size": [
+        0.96,
+        0.035
+      ]
+    },
+    {
+      "name": "VoidBottom",
+      "uv": [
+        0.5,
+        0.985
+      ],
+      "uv_size": [
+        0.96,
+        0.03
+      ]
+    },
+    {
+      "name": "VoidLeft",
+      "uv": [
+        0.018,
+        0.5
+      ],
+      "uv_size": [
+        0.035,
+        0.94
+      ]
+    },
+    {
+      "name": "VoidRight",
+      "uv": [
+        0.982,
+        0.5
+      ],
+      "uv_size": [
+        0.035,
+        0.94
+      ]
+    },
+    {
+      "name": "NorthwestCastle",
+      "uv": [
+        0.14,
+        0.078
+      ],
+      "uv_size": [
+        0.12,
+        0.1
+      ]
+    },
+    {
+      "name": "NorthwestCrystalGrove",
+      "uv": [
+        0.245,
+        0.14
+      ],
+      "uv_size": [
+        0.2,
+        0.2
+      ]
+    },
+    {
+      "name": "NorthwestLeftCrystalWall",
+      "uv": [
+        0.058,
+        0.22
+      ],
+      "uv_size": [
+        0.08,
+        0.22
+      ]
+    },
+    {
+      "name": "NorthwestLowerCliff",
+      "uv": [
+        0.17,
+        0.315
+      ],
+      "uv_size": [
+        0.23,
+        0.08
+      ]
+    },
+    {
+      "name": "NorthArchive",
+      "uv": [
+        0.485,
+        0.085
+      ],
+      "uv_size": [
+        0.13,
+        0.13
+      ]
+    },
+    {
+      "name": "NorthArchiveStairLeft",
+      "uv": [
+        0.43,
+        0.22
+      ],
+      "uv_size": [
+        0.075,
+        0.08
+      ]
+    },
+    {
+      "name": "NorthArchiveStairRight",
+      "uv": [
+        0.55,
+        0.22
+      ],
+      "uv_size": [
+        0.075,
+        0.08
+      ]
+    },
+    {
+      "name": "CentralGateWest",
+      "uv": [
+        0.425,
+        0.295
+      ],
+      "uv_size": [
+        0.08,
+        0.085
+      ]
+    },
+    {
+      "name": "CentralGateEast",
+      "uv": [
+        0.56,
+        0.295
+      ],
+      "uv_size": [
+        0.08,
+        0.085
+      ]
+    },
+    {
+      "name": "NortheastRuinIsland",
+      "uv": [
+        0.72,
+        0.12
+      ],
+      "uv_size": [
+        0.17,
+        0.16
+      ]
+    },
+    {
+      "name": "NortheastRunePlaza",
+      "uv": [
+        0.81,
+        0.245
+      ],
+      "uv_size": [
+        0.145,
+        0.16
+      ]
+    },
+    {
+      "name": "FarRightSkyWell",
+      "uv": [
+        0.935,
+        0.155
+      ],
+      "uv_size": [
+        0.095,
+        0.18
+      ]
+    },
+    {
+      "name": "EastTower",
+      "uv": [
+        0.93,
+        0.43
+      ],
+      "uv_size": [
+        0.09,
+        0.2
+      ]
+    },
+    {
+      "name": "WestMazeOuterNorth",
+      "uv": [
+        0.18,
+        0.39
+      ],
+      "uv_size": [
+        0.24,
+        0.055
+      ]
+    },
+    {
+      "name": "WestMazeOuterWest",
+      "uv": [
+        0.085,
+        0.48
+      ],
+      "uv_size": [
+        0.06,
+        0.2
+      ]
+    },
+    {
+      "name": "WestMazeOuterSouth",
+      "uv": [
+        0.18,
+        0.585
+      ],
+      "uv_size": [
+        0.2,
+        0.055
+      ]
+    },
+    {
+      "name": "WestMazeInnerCore",
+      "uv": [
+        0.18,
+        0.48
+      ],
+      "uv_size": [
+        0.075,
+        0.09
+      ]
+    },
+    {
+      "name": "WestMazeEastHouses",
+      "uv": [
+        0.285,
+        0.485
+      ],
+      "uv_size": [
+        0.08,
+        0.11
+      ]
+    },
+    {
+      "name": "PlazaRuneBoard",
+      "uv": [
+        0.49,
+        0.49
+      ],
+      "uv_size": [
+        0.11,
+        0.12
+      ]
+    },
+    {
+      "name": "PlazaNorthCrystal",
+      "uv": [
+        0.49,
+        0.395
+      ],
+      "uv_size": [
+        0.035,
+        0.04
+      ]
+    },
+    {
+      "name": "PlazaWestCrystal",
+      "uv": [
+        0.405,
+        0.48
+      ],
+      "uv_size": [
+        0.035,
+        0.04
+      ]
+    },
+    {
+      "name": "PlazaEastCrystal",
+      "uv": [
+        0.575,
+        0.48
+      ],
+      "uv_size": [
+        0.035,
+        0.04
+      ]
+    },
+    {
+      "name": "PlazaSouthCrystal",
+      "uv": [
+        0.49,
+        0.605
+      ],
+      "uv_size": [
+        0.035,
+        0.04
+      ]
+    },
+    {
+      "name": "MoonLakeNorthWater",
+      "uv": [
+        0.74,
+        0.59
+      ],
+      "uv_size": [
+        0.18,
+        0.11
+      ]
+    },
+    {
+      "name": "MoonLakeCenterWater",
+      "uv": [
+        0.755,
+        0.705
+      ],
+      "uv_size": [
+        0.21,
+        0.18
+      ]
+    },
+    {
+      "name": "MoonLakeSouthWater",
+      "uv": [
+        0.74,
+        0.835
+      ],
+      "uv_size": [
+        0.16,
+        0.18
+      ]
+    },
+    {
+      "name": "MoonLakeEastBank",
+      "uv": [
+        0.865,
+        0.735
+      ],
+      "uv_size": [
+        0.08,
+        0.24
+      ]
+    },
+    {
+      "name": "MoonLakeWestRocks",
+      "uv": [
+        0.635,
+        0.72
+      ],
+      "uv_size": [
+        0.08,
+        0.22
+      ]
+    },
+    {
+      "name": "SouthwestTower",
+      "uv": [
+        0.095,
+        0.68
+      ],
+      "uv_size": [
+        0.12,
+        0.12
+      ]
+    },
+    {
+      "name": "SouthManorMain",
+      "uv": [
+        0.245,
+        0.83
+      ],
+      "uv_size": [
+        0.22,
+        0.2
+      ]
+    },
+    {
+      "name": "SouthManorEastWing",
+      "uv": [
+        0.345,
+        0.84
+      ],
+      "uv_size": [
+        0.08,
+        0.16
+      ]
+    },
+    {
+      "name": "SouthAltar",
+      "uv": [
+        0.49,
+        0.815
+      ],
+      "uv_size": [
+        0.18,
+        0.22
+      ]
+    },
+    {
+      "name": "SoutheastTemple",
+      "uv": [
+        0.87,
+        0.84
+      ],
+      "uv_size": [
+        0.19,
+        0.2
+      ]
+    }
+  ]
+}

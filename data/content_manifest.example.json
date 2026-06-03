@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "schedule_url": "https://你的域名或GitHub Pages/content/schedule.json",
+  "tasks_url": "https://你的域名或GitHub Pages/content/tasks.json",
+  "activities_url": "https://你的域名或GitHub Pages/content/activities.json"
+}
